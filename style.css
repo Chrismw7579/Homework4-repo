@@ -7,3 +7,15 @@ body {
 #main {
     text-align: center;
 }
+
+.answer {
+    background-color: blue;
+    border-radius: 5px;
+    margin: 3px 0 3px 0;
+}
+
+.title {
+    background-color: red;
+    border-radius: 5px;
+    margin: 3px 0 3px 0;
+}
