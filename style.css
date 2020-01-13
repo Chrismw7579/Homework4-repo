@@ -2,6 +2,7 @@ body {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
+    
 }
 
 #main {
@@ -10,12 +11,52 @@ body {
 
 .answer {
     background-color: blue;
+    font-size: 20px;
     border-radius: 5px;
     margin: 3px 0 3px 0;
 }
 
 .title {
-    background-color: red;
-    border-radius: 5px;
+    font-size: 30px;
     margin: 3px 0 3px 0;
 }
+
+#timer {
+    position: fixed;
+    left: 80%;
+    top: 10%;
+}
+
+#penalty {
+    position: fixed;
+    left: 80%;
+    top: 20%;
+}
+
+#high-scores {
+    text-align: center;
+}
+
+#back, #clear {
+    border-radius: 5px;
+}
+
+#response {
+    font-size: 20px;
+}
+
+header {
+    position: relative;
+    margin: 0 0 20px 0;
+}
+
+#link {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+}
+
+#directions {
+    font-size: 20px;
+}
+

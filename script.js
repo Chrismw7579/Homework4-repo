@@ -1,17 +1,36 @@
 
 $(document).ready(function() {
     let quiz = $("#quiz");
-
-
+    let timer = $("#timer");
+    let timePenalty = $("#penalty");
+    let responseElement = $("#response");
+    let enter = $("#enter");
+    let initialsInput = $("#input");
+   
 
     let index = 0;
-    let score = 0;
     let penalty = 5;
+    let timeLimit = questions.length * 15; // gives 15 seconds for each question
+    let finished = false;
+    
+
+    $("#done").hide();
     
     CreateQuiz(index);
     
-    
-    
+    // Subtracts 1 from timeLimit variable every second until timeLimit equals zero
+    setInterval(function Timer() {
+        timePenalty.text("");
+        if (!finished) {
+            if (timeLimit <= 0) {
+                timer.text("Times up!");
+            } else {
+                timeLimit--;
+                timer.text("Time remaining: " + timeLimit);
+            }
+        }
+        
+    }, 1000);
     
     function CreateQuiz(index) {
         let list = questions[index].choices;
@@ -24,33 +43,65 @@ $(document).ready(function() {
         quiz.append(newTitle);
         for (var i = 0; i < list.length; i++) {
             var newItem = $("<div>");
-            var textItem = $("<span>");
-            textItem.text(list[i]);
+            var textItem = $("<button>");
+            textItem.text((i + 1)  + ". " +  list[i]);
+            textItem.attr('answer', list[i]);
             textItem.addClass("answer");
             newItem.append(textItem);
             quiz.append(newItem);
         }
     }
-    
-    $(".answer").on("click", function() {
+
+    function clearResponse(){
+       responseElement.text("");
+    }
+
+    $(document).on('click', ".answer", function() {
         
-        if ($(this).text() == questions[index].answer) {
-            console.log("Correct!");
-            score++;
-            console.log("score " + score);
-        } else {
-            console.log("Incorrect.")
+        if (timeLimit > 0 && index < questions.length) {
+            if ($(this).attr('answer') == questions[index].answer) {
+                responseElement.text("Correct!");
+            } else {
+                responseElement.text("Incorrect.");
+                timeLimit -= penalty;
+                timePenalty.text("-" + penalty + " seconds.");
+            }
+
+            setTimeout(clearResponse,1500);
+            
+            index++;
+           
+            quiz.empty();
+            if(index < questions.length) {
+                CreateQuiz(index);
+            } else {
+                
+                finished = true;
+                EnterInitials();
+            }
         }
-    
-        index++;
-        quiz.empty();
-        CreateQuiz(index);
     })
 
-
-
     
-})
+    function EnterInitials() {
+        initialsInput.val('');
+        $("#done").show();
+        $("#final").text("Your final score is " + timeLimit);
+    }
+
+    enter.on("click", function(){
+        let user = {
+            initials: initialsInput.val(),
+            score: timeLimit
+        }
+        
+        if (user.score > localStorage.getItem(user.initials) ) {
+            localStorage.setItem(user.initials, user.score);
+        }
+        $(location).attr('href',"highscores.html");
+    });
+
+});
 
 
 
