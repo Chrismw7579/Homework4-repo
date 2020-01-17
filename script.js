@@ -4,7 +4,6 @@ $(document).ready(function() {
     let timer = $("#timer");
     let timePenalty = $("#penalty");
     let responseElement = $("#response");
-    let enter = $("#enter");
     let initialsInput = $("#input");
    
 
@@ -24,6 +23,9 @@ $(document).ready(function() {
         if (!finished) {
             if (timeLimit <= 0) {
                 timer.text("Times up!");
+                quiz.empty();
+                EnterInitials();
+                finished = true;
             } else {
                 timeLimit--;
                 timer.text("Time remaining: " + timeLimit);
@@ -80,7 +82,7 @@ $(document).ready(function() {
                 EnterInitials();
             }
         }
-    })
+    });
 
     
     function EnterInitials() {
@@ -89,13 +91,16 @@ $(document).ready(function() {
         $("#final").text("Your final score is " + timeLimit);
     }
 
-    enter.on("click", function(){
+
+    $(document).on("click", "#enter", function() {
         let user = {
             initials: initialsInput.val(),
             score: timeLimit
         }
-        
-        if (user.score > localStorage.getItem(user.initials) ) {
+        if (localStorage.getItem(user.initials) == null) {
+            localStorage.setItem(user.initials, user.score);
+        } else if (user.score > localStorage.getItem(user.initials) ) {
+            
             localStorage.setItem(user.initials, user.score);
         }
         $(location).attr('href',"highscores.html");
